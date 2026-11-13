@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#100d1d">
+<title>La Noche Sin Filtro</title>
+<style>
+:root{--bg:#100d1d;--panel:#1b1730;--panel2:#25203d;--pink:#ff4fa3;--purple:#a78bfa;--cyan:#67e8f9;--text:#fff8ff;--muted:#b9afca;--line:#39314f}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#30204b 0%,var(--bg) 55%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+main{max-width:760px;margin:auto;padding:22px 16px 42px}.brand{text-align:center;margin:8px 0 22px}.brand .eyebrow{color:var(--cyan);font-size:12px;letter-spacing:3px;font-weight:800}.brand h1{font-size:clamp(30px,8vw,48px);line-height:1;margin:10px 0;background:linear-gradient(90deg,#fff,var(--pink),var(--purple));background-clip:text;color:transparent}.brand p{color:var(--muted);margin:8px 0}
+.card{background:linear-gradient(145deg,rgba(36,29,60,.97),rgba(24,20,42,.97));border:1px solid var(--line);border-radius:22px;padding:18px;margin:14px 0;box-shadow:0 14px 40px #0004}
+h2{font-size:19px;margin:0 0 12px}.muted{color:var(--muted)}.small{font-size:13px;color:var(--muted)}
+.players{display:grid;grid-template-columns:1fr 1fr;gap:10px}.player input{width:100%;background:#100d1d;border:1px solid var(--line);border-radius:12px;padding:13px;color:white;font-size:16px}
+.modes{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.mode{border:1px solid var(--line);background:#171329;color:var(--text);border-radius:15px;padding:13px 10px;text-align:left;cursor:pointer;min-height:78px}.mode strong{display:block;margin-bottom:4px}.mode span{font-size:12px;color:var(--muted)}.mode.active{border-color:var(--pink);background:#3a2044;box-shadow:0 0 0 1px var(--pink) inset}
+button{font:inherit;cursor:pointer}.primary,.secondary,.ghost{border:0;border-radius:14px;padding:14px 16px;font-weight:800}.primary{background:linear-gradient(90deg,var(--pink),#a855f7);color:white;width:100%;box-shadow:0 8px 22px #ff4fa333}.secondary{background:#34294f;color:white;border:1px solid #57456e}.ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.pill{font-size:12px;color:var(--cyan);background:#12313a;padding:7px 10px;border-radius:999px;font-weight:800}.progress{height:6px;background:#302943;border-radius:20px;overflow:hidden;margin:12px 0 18px}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--cyan));transition:width .3s}
+.question{font-size:clamp(23px,6vw,34px);line-height:1.2;font-weight:850;margin:18px 0 16px}.hint{background:#151126;border:1px dashed #5b4b77;padding:13px;border-radius:14px;color:#e6dcf5;line-height:1.45}.hint b{color:var(--cyan)}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}.actions .primary{grid-column:1/-1}
+.votegrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}.vote{background:#171329;color:white;border:1px solid var(--line);border-radius:13px;padding:12px}.vote.selected{border-color:var(--pink);background:#482341}.vote small{display:block;color:var(--muted);margin-top:3px}
+.hidden{display:none!important}.footer{text-align:center;color:#897f9e;font-size:12px;margin-top:20px}.tag{color:var(--pink);font-weight:900;font-size:12px;letter-spacing:1.5px}.counter{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}
+@media(max-width:380px){.modes{grid-template-columns:1fr}.players{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<header class="brand"><div class="eyebrow">4 PERSONAS · UNA NOCHE · CERO ABURRIMIENTO</div><h1>LA NOCHE<br>SIN FILTRO</h1><p>Preguntas que empiezan con risas y acaban en conversaciones de verdad. ✨</p></header>
+
+<section id="setup" class="card">
+<h2>👯‍♀️ Primero, ¿quién está jugando?</h2>
+<p class="small">Poned vuestros nombres. Podéis ser pareja + amigos, cuatro amigos o la combinación que os dé la gana.</p>
+<div class="players">
+<div class="player"><input id="p0" value="Jugador 1" maxlength="18" aria-label="Jugador 1"></div>
+<div class="player"><input id="p1" value="Jugador 2" maxlength="18" aria-label="Jugador 2"></div>
+<div class="player"><input id="p2" value="Jugador 3" maxlength="18" aria-label="Jugador 3"></div>
+<div class="player"><input id="p3" value="Jugador 4" maxlength="18" aria-label="Jugador 4"></div>
+</div>
+<h2 style="margin-top:20px">🎭 Elegid el ambiente</h2>
+<div class="modes" id="modes">
+<button class="mode active" data-mode="mix"><strong>🎲 Mezcla explosiva</strong><span>Un poco de todo, sin saber qué viene.</span></button>
+<button class="mode" data-mode="salseo"><strong>👀 Salseo</strong><span>Ex, celos, primeras impresiones y cotilleos.</span></button>
+<button class="mode" data-mode="profundo"><strong>🌙 Conversaciones</strong><span>Amistad, miedos, recuerdos y sentimientos.</span></button>
+<button class="mode" data-mode="atrevido"><strong>🔥 Sin filtros</strong><span>Preguntas comprometidas y verdades incómodas.</span></button>
+<button class="mode" data-mode="situaciones"><strong>🤣 Situaciones</strong><span>Escenarios absurdos y debates imposibles.</span></button>
+<button class="mode" data-mode="pareja"><strong>💘 Entre nosotros</strong><span>Cómo os veis, pareja, amistad y confianza.</span></button>
+</div>
+<p class="small" style="margin:14px 0">Regla de oro: cualquiera puede pasar una pregunta sin dar explicaciones. No hay obligación de contar algo íntimo.</p>
+<button class="primary" id="start">EMPEZAR LA NOCHE ✨</button>
+</section>
+
+<section id="game" class="hidden">
+<div class="topline"><span class="pill" id="category">🎲 MEZCLA EXPLOSIVA</span><span class="counter" id="count">Pregunta 1</span></div>
+<div class="progress"><i id="bar"></i></div>
+<div class="card">
+<div class="tag" id="kind">PARA ROMPER EL HIELO</div>
+<div class="question" id="question"></div>
+<div class="hint" id="follow"><b>Pero no os quedéis ahí…</b><br><span id="followtext"></span></div>
+<div id="voting" class="hidden">
+<p class="small" style="margin-top:16px">Si la pregunta es de «quién es más probable», votad tocando a una persona. Después, que se defienda. 👀</p>
+<div class="votegrid" id="votegrid"></div>
+<p class="small" id="voteinfo">Todavía no hay votos.</p>
+</div>
+<div class="actions">
+<button class="secondary" id="reveal">💬 Sacar conversación</button>
+<button class="secondary" id="voteToggle">👀 Votar a alguien</button>
+<button class="primary" id="next">SIGUIENTE PREGUNTA →</button>
+</div>
+</div>
+<div class="card">
+<h2>🗣️ Mini regla para que no muera la conversación</h2>
+<p class="muted" id="rule">Quien responda puede elegir a otra persona para que cuente su versión.</p>
+</div>
+<div class="actions">
+<button class="ghost" id="back">← Volver al inicio</button>
+<button class="ghost" id="shuffle">🔀 Cambiar pregunta</button>
+</div>
+</section>
+<section id="end" class="card hidden">
+<div class="brand"><div class="eyebrow">MISIÓN CUMPLIDA</div><h1>¿Y AHORA QUÉ?</h1><p>La mejor parte es seguir hablando cuando el juego termina. 💜</p></div>
+<div class="question" style="font-size:24px">Ronda final: cada persona dice algo que haya descubierto hoy sobre otra.</div>
+<p class="hint">Y una última: ¿qué conversación de esta noche os gustaría continuar otro día?</p>
+<button class="primary" id="again">JUGAR OTRA VEZ ↻</button>
+</section>
+<div class="footer">Hecho para hablar, reírse y conocerse. Los tragos son opcionales; las conversaciones, el plan. 💗</div>
+</main>
+<script>
+const bank = [
+["salseo","👀 ¿Quién es más probable que vuelva con su ex?","Que explique qué tendría que pasar para volver… y que los demás digan si se lo creen.","Defensa obligatoria: la persona señalada tiene 30 segundos para justificarse."],
+["salseo","¿Cuál fue la primera impresión que tuviste de cada persona de esta mesa?","¿A quién juzgaste mal? ¿Quién te sorprendió para bien?","No vale decir solo «bien»: contad el detalle que os hizo pensar eso."],
+["salseo","¿Qué red flag has ignorado alguna vez porque alguien te gustaba mucho?","¿La volverías a ignorar? ¿Qué aprendiste de aquello?","Si alguien se siente identificado, puede contar su versión sin que le interrumpan."],
+["salseo","¿Alguna vez has sentido celos y te ha dado vergüenza admitirlo?","¿Qué te habría ayudado a expresarlo mejor?","Separad los celos de lo que cada uno hace con ellos."],
+["salseo","¿Qué cotilleo te gustaría saber de alguien famoso o de tu entorno?","¿Por qué crees que te intriga tanto?","Inventad una teoría absurda y defendedla como si fuera cierta."],
+["salseo","¿Has stalkeado a alguien y terminado encontrando algo que no buscabas?","¿Lo contaste o te lo guardaste?","La persona más curiosa cuenta su mejor investigación digital."],
+["salseo","¿Qué mensaje has escrito muchas veces y al final nunca enviaste?","¿Qué te frenó? ¿Lo enviarías hoy?","Podéis resumirlo, no hace falta enseñar conversaciones privadas."],
+["salseo","¿Quién de aquí crees que liga sin darse cuenta?","¿Qué hace que dé esa impresión?","La persona elegida tiene derecho a réplica."],
+["salseo","¿Qué situación amorosa te ha dado más vergüenza?","¿Ahora te ríes o todavía te da cosilla?","Contadlo como si fuera una escena de una serie."],
+["salseo","¿Qué opinión sobre el amor defenderías aunque todos os llevasen la contraria?","¿De dónde viene esa opinión?","Debate: dos personas a favor y dos en contra."],
+["profundo","¿En qué momento reciente te has sentido realmente querido/a?","¿Qué hizo esa persona, aunque pareciera una tontería?","Intentad escuchar sin quitarle importancia."],
+["profundo","¿Qué parte de ti crees que la gente suele entender mal?","¿Qué te gustaría que preguntaran en vez de asumir?","Cada persona puede hacer una pregunta amable para entenderlo mejor."],
+["profundo","¿Qué te cuesta pedir aunque lo necesites?","¿Qué te ayudaría a pedirlo sin sentirte una carga?","Completad: «Me resulta más fácil cuando…»."],
+["profundo","¿Qué recuerdo pequeño te gustaría volver a vivir un día?","¿Quién estaba allí? ¿Qué lo hacía especial?","Describidlo con tres detalles, como si estuviéramos allí."],
+["profundo","¿Qué has aprendido de ti en el último año?","¿Qué versión antigua de ti agradecería saberlo?","Los demás pueden decir qué cambio positivo han notado."],
+["profundo","¿Qué miedo te gustaría que pesara menos en tu vida?","¿Qué paso pequeño podrías dar para que ocupe menos espacio?","Nada de solucionar la vida de nadie: escuchad primero."],
+["profundo","¿Cuándo te cuesta más confiar en alguien?","¿Qué acciones te hacen sentir seguridad?","Cada persona dice una acción concreta que valora."],
+["profundo","¿Qué cosa te hace sentir en casa, incluso fuera de casa?","¿Es un lugar, una persona, un olor o una costumbre?","Que los demás adivinen antes de responder."],
+["profundo","¿Qué te gustaría que tus amigos entendieran mejor de ti?","¿Hay algo que no sueles contar por miedo a cómo sonará?","Se puede responder hasta donde cada uno quiera."],
+["profundo","¿Qué significa para ti tener una amistad de verdad?","¿Qué gesto mantiene una amistad viva?","Cada uno agradece algo concreto a alguien de la mesa."],
+["atrevido","¿Qué es algo que te atrae muchísimo y casi nunca admites?","¿Es una cualidad, una actitud o algo físico?","Podéis responder sin dar nombres."],
+["atrevido","¿Has fingido que algo no te importaba cuando sí te importaba muchísimo?","¿Qué habrías querido decir realmente?","La frase empieza por: «La verdad es que sí me importaba…»."],
+["atrevido","¿Qué límite te costó aprender a poner?","¿Qué pasó cuando empezaste a respetarlo?","Los demás pueden compartir una frase útil para poner límites."],
+["atrevido","¿Qué mentira piadosa dices más a menudo?","¿La dices para evitar conflicto, protegerte o por costumbre?","Intentad adivinar la respuesta de cada persona."],
+["atrevido","¿Qué tema te pone a la defensiva aunque sepas que podrías hablarlo?","¿Qué necesitarías para hablarlo con calma?","No presionéis a quien prefiera pasar."],
+["atrevido","¿Qué has hecho por impresionar a alguien y ahora te da risa?","¿Funcionó o fue un desastre?","Contadlo con todos los detalles teatrales posibles."],
+["atrevido","¿Qué es algo que jamás volverías a tolerar en una relación?","¿Y qué error propio intentarías no repetir?","Dos verdades: una sobre lo que pides y otra sobre lo que ofreces."],
+["atrevido","¿Qué pensamiento políticamente incorrecto pero inofensivo tienes?","¿Puedes defenderlo sin enfadarte?","Debate amistoso: se puede discrepar sin atacar."],
+["situaciones","Si mañana os despertáis siendo otra persona de esta mesa, ¿qué es lo primero que haríais?","¿Qué hábito suyo copiaríais y cuál os costaría soportar?","La persona imitada puede poner una objeción."],
+["situaciones","Os quedáis atrapados en un ascensor durante cinco horas. ¿Quién mantiene la calma y quién monta el espectáculo?","¿Qué papel tendría cada uno?","Repartid roles: líder, dramático, bromista y solucionador."],
+["situaciones","Tenéis que abrir un negocio juntos. ¿Qué negocio sería y quién haría qué?","¿Quién sería el jefe y quién acabaría despedido el primer día?","Diseñad el nombre y el eslogan en un minuto."],
+["situaciones","Si os hicieran un reality show, ¿qué título tendría y quién sería el protagonista?","¿Qué escena se haría viral?","Cada uno propone el título más cruel pero cariñoso."],
+["situaciones","Solo podéis llevar tres cosas a una isla desierta y tenéis que compartirlas. ¿Qué elegís?","¿Qué objeto de otra persona os robaríais?","Negociad hasta llegar a un acuerdo entre los cuatro."],
+["situaciones","Si tuvierais que intercambiar vidas durante una semana, ¿qué sería lo más difícil?","¿Qué haríais primero con esa libertad?","Cada uno elige a quién le cambiaría la vida."],
+["situaciones","¿Quién sobreviviría mejor a un apocalipsis zombi y quién sería el primero en caer?","¿Por qué?","La persona elegida para caer puede defender su estrategia."],
+["situaciones","Si pudierais escuchar los pensamientos de una persona de esta mesa durante diez minutos, ¿a quién elegiríais?","¿Qué creéis que descubriríais?","La persona elegida puede preguntar qué esperáis encontrar."],
+["pareja","¿Qué gesto pequeño hace que te sientas elegido/a por alguien?","¿Lo has dicho alguna vez en voz alta?","Cada uno puede pedir un gesto concreto sin exigirlo."],
+["pareja","¿Qué diferencia hay para ti entre querer a alguien y saber cuidarlo?","¿Qué ejemplo has vivido?","Que cada persona complete: «Me siento cuidado/a cuando…»."],
+["pareja","¿Qué amistad o relación te ha enseñado algo importante sobre ti?","¿Qué te llevas de esa experiencia?","No hace falta nombrar a nadie si no apetece."],
+["pareja","¿Qué es más importante cuando hay un conflicto: hablar enseguida o tener un rato para calmarse?","¿Cómo se puede pedir espacio sin hacer sentir abandonada a la otra persona?","Acordad una frase que os serviría en una discusión."],
+["pareja","¿Qué admiras de cada persona que está aquí?","¿Qué cualidad crees que esa persona no ve en sí misma?","Mirad a la persona al decírselo. Sin bromear para escapar."],
+["pareja","¿Qué plan sencillo te hace más feliz compartir con alguien?","¿Con quién de esta mesa lo harías y por qué?","Organizad una versión realista de ese plan."],
+["pareja","¿Qué cosa no negociable necesitas para sentirte libre en una relación?","¿Cómo se construye confianza sin controlar?","Cada uno dice una conducta que construye confianza."],
+["pareja","¿Qué conversación pendiente te gustaría tener con alguien a quien quieres?","¿Qué te gustaría que esa persona entendiera?","Podéis practicar cómo empezar esa conversación."],
+["salseo","¿Quién de aquí sería capaz de guardar un secreto durante años?","¿Y quién se le escaparía sin querer?","Votad y pedid a cada uno que explique su fama."],
+["profundo","¿Qué te gustaría hacer antes de que termine el próximo año?","¿Qué te está frenando y qué primer paso sería posible?","Los demás pueden ayudar a convertirlo en un plan pequeño."],
+["atrevido","¿Qué disculpa te habría gustado recibir alguna vez?","¿Qué habría tenido que incluir para sentirse sincera?","Diferenciad una disculpa real de un simple «perdón si…»."],
+["situaciones","Si esta mesa fuera un grupo de WhatsApp, ¿cómo se llamaría y quién mandaría más audios?","¿Quién deja en visto y quién contesta tres días después?","Inventad el mensaje fijado del grupo."],
+["pareja","¿Qué te gustaría que hiciéramos más a menudo como grupo?","¿Qué plan lleváis tiempo diciendo que haréis y nunca hacéis?","Elegid una fecha o una idea concreta antes de pasar."]
+];
+const labels={mix:"🎲 MEZCLA EXPLOSIVA",salseo:"👀 SALSEO",profundo:"🌙 CONVERSACIONES",atrevido:"🔥 SIN FILTROS",situaciones:"🤣 SITUACIONES",pareja:"💘 ENTRE NOSOTROS"};
+let mode="mix",deck=[],pos=0,current=null,votes=[0,0,0,0],names=[];
+const $=id=>document.getElementById(id);
+document.querySelectorAll(".mode").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".mode").forEach(x=>x.classList.remove("active"));b.classList.add("active");mode=b.dataset.mode}));
+function makeDeck(){let arr=bank.filter(q=>mode==="mix"||q[0]===mode);return arr.sort(()=>Math.random()-.5)}
+function start(){names=[0,1,2,3].map(i=>($("p"+i).value.trim()||"Jugador "+(i+1)));deck=makeDeck();pos=0;$("setup").classList.add("hidden");$("end").classList.add("hidden");$("game").classList.remove("hidden");show()}
+function show(){if(pos>=deck.length){$("game").classList.add("hidden");$("end").classList.remove("hidden");return}current=deck[pos];votes=[0,0,0,0];$("category").textContent=labels[current[0]];$("count").textContent=`Pregunta ${pos+1} de ${deck.length}`;$("bar").style.width=((pos+1)/deck.length*100)+"%";$("kind").textContent=current[0]==="salseo"?"OJOS ABIERTOS":current[0]==="profundo"?"HABLEMOS DE VERDAD":current[0]==="atrevido"?"SIN ESCONDERSE":current[0]==="situaciones"?"IMAGINACIÓN AL PODER":"ENTRE NOSOTROS";$("question").textContent=current[1];$("followtext").textContent=current[2];$("rule").textContent=current[3];$("voting").classList.add("hidden");$("voteToggle").textContent="👀 Votar a alguien";$("voteinfo").textContent="Todavía no hay votos.";renderVotes()}
+function renderVotes(){const g=$("votegrid");g.innerHTML="";names.forEach((n,i)=>{const b=document.createElement("button");b.className="vote"+(votes[i]?" selected":"");b.innerHTML=`${escapeHtml(n)}<small>${votes[i]} voto${votes[i]===1?"":"s"}</small>`;b.onclick=()=>{votes[i]++;renderVotes()};g.appendChild(b)})}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+$("start").onclick=start;$("next").onclick=()=>{pos++;show()};$("voteToggle").onclick=()=>{$("voting").classList.toggle("hidden");$("voteToggle").textContent=$("voting").classList.contains("hidden")?"👀 Votar a alguien":"🙈 Ocultar votos"};$("reveal").onclick=()=>{const h=$("follow");h.style.borderColor="#ff4fa3";h.scrollIntoView({behavior:"smooth",block:"nearest"});$("followtext").textContent=current[2]+"  Y ahora: que cada persona responda algo, aunque sea breve."};$("shuffle").onclick=()=>{const old=current;let choices=deck.filter(q=>q!==old);if(choices.length){current=choices[Math.floor(Math.random()*choices.length)];const idx=deck.indexOf(current);deck[idx]=old;showCurrent()}};
+function showCurrent(){votes=[0,0,0,0];$("category").textContent=labels[current[0]];$("kind").textContent="CAMBIO DE PLAN";$("question").textContent=current[1];$("followtext").textContent=current[2];$("rule").textContent=current[3];$("voting").classList.add("hidden");renderVotes()}
+$("back").onclick=()=>{if(confirm("¿Volvemos al inicio? Se perderá el progreso de esta partida.")){$("game").classList.add("hidden");$("setup").classList.remove("hidden")}};$("again").onclick=()=>{$("end").classList.add("hidden");$("setup").classList.remove("hidden")};
+</script>
+</body>
+</html>
